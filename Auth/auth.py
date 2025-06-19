@@ -1,10 +1,9 @@
 from typing import Dict
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
-from Auth.functions import get_session
 from Database.ORM_Models.auth_models import *
 from Database.ORM_Models.token_models import Token
-from Auth.functions import authenticate_user, get_user_detail, create_jwt, hash_password
+from Auth.functions import authenticate_user, get_user_detail, create_jwt, hash_password, get_session
 from Http_Exceptions.exceptions import wrong_authentication, user_not_found, user_already_exist
 
 auth_router = APIRouter()
