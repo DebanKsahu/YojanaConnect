@@ -10,3 +10,4 @@ pyproject.toml
 
 # Virtual environments
 .venv
+.env
