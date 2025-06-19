@@ -1,3 +1,4 @@
+from fastapi.security import OAuth2PasswordBearer
 from sqlmodel import Session
 from typing import Generator
 from Database.Engine import engine
@@ -13,6 +14,7 @@ SECRET_KEY="7165de02e0e87f1f89a7ab20598d39fc476383d23c529017fa55e107a7157480"
 ALGORITHM="HS256"
 
 pwdContext = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 def get_session() -> Generator[Session, None, None]:
     with Session(engine) as session:
