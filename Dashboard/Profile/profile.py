@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Depends
 from Auth.functions import oauth2_scheme, get_session, SECRET_KEY, ALGORITHM
 from sqlmodel import Session, select
-from Database.ORM_Models.auth_models import UserInDB
+from Database.ORM_Models.auth_models import UserInDB, UserAddressInDB
 from Database.ORM_Models.profile_models import ProfileExpose, ProfileEdit
 from Http_Exceptions.exceptions import user_not_found, wrong_authentication
 import jwt
@@ -19,7 +19,10 @@ def get_profile(token: str = Depends(oauth2_scheme), session: Session = Depends(
         raise user_not_found
     if user_detail.full_name!=logged_user_name:
         raise wrong_authentication
-    return user_detail
+    user_detail_dict = user_detail.model_dump()
+    user_detail_dict["user_address"]=user_detail.address_detail
+    print(user_detail.address_detail)
+    return user_detail_dict
 
 @profile_router.patch("/profile/edit")
 def edit_profile(new_data: ProfileEdit, token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
@@ -32,6 +35,16 @@ def edit_profile(new_data: ProfileEdit, token: str = Depends(oauth2_scheme), ses
     if user_detail.full_name!=logged_user_name:
         raise wrong_authentication
     new_data_dict = new_data.model_dump(exclude_unset=True)
+    if "user_address" in new_data_dict:
+        new_address_detail_dict = new_data_dict.pop("user_address")
+        user_address = session.get(UserAddressInDB,logged_user_pk)
+        if user_address is None:
+            new_address_detail_dict["aadhaar_number"]=logged_user_pk
+            new_user_address = UserAddressInDB(**new_address_detail_dict)
+            session.add(new_user_address)
+        else:
+            user_address.sqlmodel_update(new_address_detail_dict)
+            session.add(user_address)
     user_detail.sqlmodel_update(new_data_dict)
     session.add(user_detail)
     session.commit()
