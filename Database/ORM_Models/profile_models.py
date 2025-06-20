@@ -16,3 +16,17 @@ class ProfileExpose(SQLModel):
     caste_category: str | None
     is_disable: bool | None
     bpl: str | None
+
+class ProfileEdit(SQLModel):
+    full_name: str | None = None
+    dob: date | None = None
+    gender: Gender | None = None
+    mobile_number: int | None = None
+    marital_status: bool | None = None
+    occupation: str | None = None
+    annual_income: int | None = None
+    annual_family_income: int | None = None
+    bank_account_number: str | None = None
+    caste_category: str | None = None
+    is_disable: bool | None = None
+    bpl: str | None = None
