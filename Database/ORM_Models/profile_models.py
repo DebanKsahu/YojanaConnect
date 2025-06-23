@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel
 from datetime import date
-from Database.ORM_Models.auth_models import Gender
+from Database.ORM_Models.auth_models import Gender, UserAddressInDB
 
 class ProfileExpose(SQLModel):
     aadhaar_number: str
@@ -16,6 +16,7 @@ class ProfileExpose(SQLModel):
     caste_category: str | None
     is_disable: bool | None
     bpl: str | None
+    user_address: UserAddressInDB | None
 
 class ProfileEdit(SQLModel):
     full_name: str | None = None
@@ -30,3 +31,4 @@ class ProfileEdit(SQLModel):
     caste_category: str | None = None
     is_disable: bool | None = None
     bpl: str | None = None
+    user_address: UserAddressInDB | None = None
