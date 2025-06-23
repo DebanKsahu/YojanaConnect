@@ -111,7 +111,7 @@ def update_criteria(new_detail: CriteriaEdit, token: str = Depends(oauth2_scheme
     temp_info = session.exec(temp_statement).first()
     if temp_info is None:
         raise criteria_not_found(new_detail_dict["criteria_name"])
-    temp_info.sqlmodel_update(**new_detail_dict)
+    temp_info.sqlmodel_update(new_detail_dict)
     session.add(temp_info)
     session.commit()
     session.refresh(temp_info)
