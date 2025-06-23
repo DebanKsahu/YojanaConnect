@@ -41,7 +41,7 @@ class UserInDB(UserBase, table=True):
     hashed_password: str
 
     address_detail: "UserAddressInDB" = Relationship(back_populates="user")
-    user_criteria: list["CriteriaInDB"] = Relationship(back_populates="user_detail")
+    user_criteria: list["CriteriaInDB"] = Relationship()
 
 class UserAddressInDB(SQLModel, table = True):
     aadhaar_number: str = Field(foreign_key="userindb.aadhaar_number", primary_key=True)
