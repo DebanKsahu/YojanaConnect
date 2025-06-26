@@ -1,21 +1,40 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-import uvicorn
 from sqlmodel import SQLModel
-from contextlib import asynccontextmanager
 from Database.Engine import engine
+from Database.VectorDB.qdrant_db import qdrant_client
+from qdrant_client import models
+from qdrant_client.models import Distance, VectorParams
 from Dashboard.Profile.profile import profile_router
+from Dashboard.Scheme.scheme import scheme_router
 from Auth.auth import auth_router
+import os
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     SQLModel.metadata.create_all(engine)
+    existing_collections = qdrant_client.get_collections().collections
+    collections_name = [col.name for col in existing_collections]
+    if "test_pdfs_5" not in collections_name:
+        qdrant_client.create_collection(
+            collection_name="test_pdfs_5",
+            vectors_config={"dense": VectorParams(size=768, distance=Distance.COSINE)},
+            )
+    schema = qdrant_client.get_collection("test_pdfs_5").payload_schema
+    if "scheme_id" not in schema:
+        qdrant_client.create_payload_index(
+            collection_name="test_pdfs_5",
+            field_name="scheme_id",
+            field_schema=models.PayloadSchemaType.INTEGER
+        )
     yield
+
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(auth_router,tags=["Auth"])
 app.include_router(profile_router,tags=["Dashboard"])
+app.include_router(scheme_router, tags=["Dashboard"])
 
 
 @app.get('/')
