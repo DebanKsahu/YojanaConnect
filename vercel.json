@@ -1,7 +1,6 @@
 {
     "builds": [
       {
-        "PYTHON_VERSION": "3.11",
         "src": "main.py",
         "use": "@vercel/python"
       }
