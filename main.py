@@ -8,7 +8,6 @@ from qdrant_client.models import Distance, VectorParams
 from Dashboard.Profile.profile import profile_router
 from Dashboard.Scheme.scheme import scheme_router
 from Auth.auth import auth_router
-import os
 
 
 @asynccontextmanager

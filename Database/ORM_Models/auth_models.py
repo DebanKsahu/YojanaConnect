@@ -23,13 +23,13 @@ class UserSignupRequest(UserLoginRequest):
     full_name: str
     dob: date
     gender: Gender
-    mobile_number: int
+    mobile_number: str
 
 class UserInDB(UserBase, table=True):
     full_name: str
     dob: date
     gender: Gender
-    mobile_number: int
+    mobile_number: str
     marital_status: bool | None = None
     occupation: str | None = None
     annual_income: int | None = None
