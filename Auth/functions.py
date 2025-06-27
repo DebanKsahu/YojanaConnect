@@ -6,12 +6,13 @@ from dotenv import load_dotenv
 from passlib.context import CryptContext
 from Database.ORM_Models.auth_models import UserLoginRequest, UserInDB, UserType
 from typing import cast
+from config import settings
 import os
 import jwt
 
 
-SECRET_KEY="7165de02e0e87f1f89a7ab20598d39fc476383d23c529017fa55e107a7157480"
-ALGORITHM="HS256"
+# SECRET_KEY="7165de02e0e87f1f89a7ab20598d39fc476383d23c529017fa55e107a7157480"
+# ALGORITHM="HS256"
 
 pwdContext = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -49,5 +50,5 @@ def get_user_detail(aadhaar_number: str, user_type: str, session: Session) -> Us
     
 def create_jwt(data: dict):
     copied_data = data.copy()
-    encoded_jwt = jwt.encode(copied_data,SECRET_KEY,algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(copied_data,settings.SECRET_KEY,algorithm=settings.ALGORITHM)
     return encoded_jwt

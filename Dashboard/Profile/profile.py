@@ -1,10 +1,11 @@
 from fastapi import APIRouter,Depends
-from Auth.functions import oauth2_scheme, get_session, SECRET_KEY, ALGORITHM
+from Auth.functions import oauth2_scheme, get_session
 from sqlmodel import Session, select
 from Database.ORM_Models.auth_models import UserInDB, UserAddressInDB
 from Database.ORM_Models.profile_models import ProfileExpose, ProfileEdit
 from Database.ORM_Models.criteria_models import CriteriaInDB, CriteriaEdit, CriteriaExpose
 from Http_Exceptions.exceptions import user_not_found, wrong_authentication, criteria_already_exist, criteria_not_found, missiing_value_exception
+from config import settings
 import jwt
 
 profile_router  = APIRouter()
@@ -12,7 +13,7 @@ profile_router  = APIRouter()
 
 @profile_router.get("/profile",response_model=ProfileExpose)
 def get_profile(token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
-    payload = jwt.decode(token,SECRET_KEY,[ALGORITHM])
+    payload = jwt.decode(token,settings.SECRET_KEY,[settings.ALGORITHM])
     logged_user_name = payload.get("sub")
     logged_user_pk = payload.get("pk")
     user_detail = session.get(UserInDB,logged_user_pk)
@@ -27,7 +28,7 @@ def get_profile(token: str = Depends(oauth2_scheme), session: Session = Depends(
 
 @profile_router.get("/profile/criteria")
 def get_criteria(token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
-    payload = jwt.decode(token,SECRET_KEY,[ALGORITHM])
+    payload = jwt.decode(token,settings.SECRET_KEY,[settings.ALGORITHM])
     logged_user_name = payload.get("sub")
     logged_user_pk = payload.get("pk")
     user_detail = session.get(UserInDB,logged_user_pk)
@@ -42,7 +43,7 @@ def get_criteria(token: str = Depends(oauth2_scheme), session: Session = Depends
 
 @profile_router.patch("/profile/edit")
 def edit_profile(new_data: ProfileEdit, token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
-    payload = jwt.decode(token,SECRET_KEY,[ALGORITHM])
+    payload = jwt.decode(token,settings.SECRET_KEY,[settings.ALGORITHM])
     logged_user_name = payload.get("sub")
     logged_user_pk = payload.get("pk")
     user_detail = session.get(UserInDB,logged_user_pk)
@@ -69,7 +70,7 @@ def edit_profile(new_data: ProfileEdit, token: str = Depends(oauth2_scheme), ses
 
 @profile_router.post("/profile/add_criteria")
 def add_criteria(criteria_detail: CriteriaInDB, token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
-    payload = jwt.decode(token,SECRET_KEY,[ALGORITHM])
+    payload = jwt.decode(token,settings.SECRET_KEY,[settings.ALGORITHM])
     logged_user_name = payload.get("sub")
     logged_user_pk = payload.get("pk")
     user_detail = session.get(UserInDB,logged_user_pk)
@@ -94,7 +95,7 @@ def add_criteria(criteria_detail: CriteriaInDB, token: str = Depends(oauth2_sche
 
 @profile_router.patch("/profile/edit_criteria")
 def update_criteria(new_detail: CriteriaEdit, token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
-    payload = jwt.decode(token,SECRET_KEY,[ALGORITHM])
+    payload = jwt.decode(token,settings.SECRET_KEY,[settings.ALGORITHM])
     logged_user_name = payload.get("sub")
     logged_user_pk = payload.get("pk")
     user_detail = session.get(UserInDB,logged_user_pk)
