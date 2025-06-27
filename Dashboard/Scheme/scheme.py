@@ -1,8 +1,8 @@
 from fastapi import APIRouter,Depends,UploadFile,Form
-from Auth.functions import oauth2_scheme, get_session, SECRET_KEY, ALGORITHM
+from Auth.functions import oauth2_scheme, get_session
 from sqlmodel import Session, select, SQLModel
 from Http_Exceptions.exceptions import user_not_found, wrong_authentication
-from Database.VectorDB.qdrant_db import create_qdrant_vectorstore, embedding, sparse_embedding, qdrant_client
+from Database.VectorDB.qdrant_db import create_qdrant_vectorstore, embedding, qdrant_client
 from Database.ORM_Models.scheme_models import SchemeInDB, SchemeExpose
 from Database.ORM_Models.auth_models import UserInDB
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -14,8 +14,8 @@ from datetime import date
 from Dashboard.Scheme.score_agent import agent_pipeline
 from Dashboard.Scheme.qna_agent import agent_qna_pipeline
 from qdrant_client.models import PointStruct
+from config import settings
 import jwt
-import os
 
 scheme_router = APIRouter()
 load_dotenv()
@@ -75,7 +75,7 @@ async def add_scheme(file: UploadFile, scheme_name: str = Form(), sector: str = 
 
 @scheme_router.get("/scheme/show_all")
 def show_all_scheme(token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
-    payload = jwt.decode(token,SECRET_KEY,[ALGORITHM])
+    payload = jwt.decode(token,settings.SECRET_KEY,[settings.ALGORITHM])
     logged_user_name = payload.get("sub")
     logged_user_pk = payload.get("pk")
     user_detail = session.get(UserInDB,logged_user_pk)
@@ -96,7 +96,7 @@ def show_all_scheme(token: str = Depends(oauth2_scheme), session: Session = Depe
 
 @scheme_router.get("/scheme/{scheme_id}")
 def scheme_qna_bot(scheme_id: int, user_query: UserQuery,  token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
-    payload = jwt.decode(token,SECRET_KEY,[ALGORITHM])
+    payload = jwt.decode(token,settings.SECRET_KEY,[settings.ALGORITHM])
     logged_user_name = payload.get("sub")
     logged_user_pk = payload.get("pk")
     user_detail = session.get(UserInDB,logged_user_pk)

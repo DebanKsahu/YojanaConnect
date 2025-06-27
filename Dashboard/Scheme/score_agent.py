@@ -1,5 +1,5 @@
-from sqlmodel import SQLModel
-from pydantic import Field
+from pydantic import BaseModel,Field
+from typing import List
 from langchain_qdrant import QdrantVectorStore
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.documents import Document
@@ -10,16 +10,25 @@ import os
 
 load_dotenv()
 
-class ResponseFormatter(SQLModel):
+class ResponseFormatter(BaseModel):
     """
-    Always use this tool to structure your response to the user.
+    Response formatter for government scheme matching.
     """
     matching_score: float = Field(
-        description=
-            """
-            This is the matching score between Govt scheme and user profile
-            which is basically no. of condition satisfied/total no. of conditions
-            """
+        description="Matching score calculated as (satisfied_criteria / total_criteria)"
+    )
+    total_criteria: int = Field(
+        description="Total number of eligibility criteria"
+    )
+    satisfied_criteria: int = Field(
+        description="Number of criteria that are satisfied"
+    )
+    matching_criteria: List[str] = Field(
+        description="List of criteria that were satisfied"
+    )
+    reason_for_failure: str | None = Field(
+        default=None,
+        description="Reason if matching failed"
     )
 
 retriever_query = "List all conditions that determine whether a person is eligible to receive benefits. In other words list all eligibility criteria"

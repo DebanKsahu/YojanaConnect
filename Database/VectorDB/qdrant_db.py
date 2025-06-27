@@ -1,14 +1,15 @@
-import os
-from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from langchain_qdrant import FastEmbedSparse, QdrantVectorStore, RetrievalMode
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from config import settings
+from dotenv import load_dotenv
 
 load_dotenv()
 
+
 qdrant_client = QdrantClient(
-    url="https://9afad7e9-1087-4e91-ab4e-82aa44a699a0.us-west-2-0.aws.cloud.qdrant.io:6333",
-    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.C7iVhsGpD3tsbRi3HWPPHaX5vV-9PHc-81mETxYUURI",
+    url= settings.QDRANT_CLUSTER_URL,
+    api_key=settings.QDRANT_API_KEY,
     timeout=30
 )
 
