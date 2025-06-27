@@ -7,7 +7,7 @@ class ProfileExpose(SQLModel):
     full_name: str
     dob: date
     gender: Gender
-    mobile_number: int
+    mobile_number: str
     marital_status: bool | None
     occupation: str | None
     annual_income: int | None
@@ -22,7 +22,7 @@ class ProfileEdit(SQLModel):
     full_name: str | None = None
     dob: date | None = None
     gender: Gender | None = None
-    mobile_number: int | None = None
+    mobile_number: str | None = None
     marital_status: bool | None = None
     occupation: str | None = None
     annual_income: int | None = None

@@ -14,4 +14,4 @@ DATABASE_NAME = settings.DATABASE_NAME
 DATABASE_URL = f"postgresql://{USERNAME}:{PASSWORD}@{HOST}/{DATABASE_NAME}?sslmode=require"
 TESTING_DATABASE_URL = settings.TESTING_DATABASE_URL
 
-engine = create_engine(url=TESTING_DATABASE_URL,echo=True)
+engine = create_engine(url=DATABASE_URL,echo=True)
