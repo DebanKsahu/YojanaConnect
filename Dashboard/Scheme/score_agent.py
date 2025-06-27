@@ -100,7 +100,6 @@ llm = ChatGoogleGenerativeAI(
     model = "models/gemini-2.0-flash",
     temperature = 0.2
 )
-testing_llm = llm
 
 llm_with_structured_output = llm.with_structured_output(ResponseFormatter)
 
@@ -122,12 +121,7 @@ def agent_pipeline(scheme_id: int, qdrant: QdrantVectorStore, user_input: str, l
             }
         },
     )
-    testing_prompt = prompt.invoke({
-        "context" : format_docs(qdrant_retriver.invoke(retriever_query)),
-        "user_data": user_input
-    })
-    testing_result = testing_llm.invoke(testing_prompt)
-    print(testing_result)
+
     qa_chain = (
         {
             "context":  RunnableLambda(lambda _: format_docs(qdrant_retriver.invoke(retriever_query))),
