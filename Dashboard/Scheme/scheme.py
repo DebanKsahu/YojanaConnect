@@ -94,7 +94,7 @@ def show_all_scheme(token: str = Depends(oauth2_scheme), session: Session = Depe
         result.append(SchemeExpose(**scheme_dict))
     return result
 
-@scheme_router.get("/scheme/{scheme_id}")
+@scheme_router.post("/scheme/{scheme_id}")
 def scheme_qna_bot(scheme_id: int, user_query: UserQuery,  token: str = Depends(oauth2_scheme), session: Session = Depends(get_session)):
     payload = jwt.decode(token,settings.SECRET_KEY,[settings.ALGORITHM])
     logged_user_name = payload.get("sub")
