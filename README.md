@@ -1,6 +1,8 @@
 # YojanaConnect
 
-YojanaConnect is an intelligent platform designed to help users discover, match, and interact with Indian government schemes. Leveraging advanced AI and vector search, it personalizes scheme recommendations and provides a conversational Q&A interface for users.
+YojanaConnect is a smart backend platform that empowers users to easily discover, match, and interact with Indian government schemes. By leveraging advanced AI, semantic search, and user profiling, YojanaConnect helps citizens find the most relevant welfare schemes based on their unique needs and eligibility. The platform offers secure authentication, personalized recommendations, and a conversational Q&A interface to make government benefits more accessible and understandable for everyone.
+
+Whether you are a citizen looking for support, a social worker assisting others, or a developer building civic tech, YojanaConnect provides robust APIs and a modern backend to power your solutions.
 
 ---
 
@@ -12,6 +14,20 @@ YojanaConnect is an intelligent platform designed to help users discover, match,
 - **Personalized Matching:** AI-powered matching of user profiles to eligible schemes.
 - **Conversational Q&A:** Ask questions about schemes and get context-aware answers.
 - **Modern Stack:** Built with FastAPI, SQLModel, Qdrant, LangChain, and Google Gemini.
+
+---
+
+## 🖥️ Frontend
+
+Looking for the frontend? Check out the YojanaConnect frontend repository here:  
+[Frontend Repository](https://github.com/KrishnaKalra/yojna-connect-frontend)
+
+---
+
+## 🌐 Live Demo
+
+Try the deployed project here:  
+[Live Project Site](https://yojna-connect-frontend.vercel.app/)
 
 ---
 
@@ -97,10 +113,4 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ---
 
-## 📝 License
-
-MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-**Made with ❤️ for public
+**Made with ❤️ for public use.**
