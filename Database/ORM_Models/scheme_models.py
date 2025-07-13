@@ -11,6 +11,7 @@ class SchemeInDB(SQLModel,table=True):
     website: str
 
 class SchemeExpose(SQLModel):
+    scheme_id: int
     scheme_name: str
     sector: str
     scheme_type: str
